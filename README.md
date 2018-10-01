@@ -71,3 +71,5 @@ Now you can use `hsm` as the PV in your Tendermint App initializer.
 ## Notice
 
 This has only been tested with Tendermint `v0.24.x`
+
+Don't consider this _production ready_.
