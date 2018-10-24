@@ -2,6 +2,7 @@ package aiakos
 
 import (
 	"errors"
+
 	"github.com/certusone/yubihsm-go"
 	"github.com/certusone/yubihsm-go/commands"
 	"github.com/certusone/yubihsm-go/connector"
@@ -10,17 +11,12 @@ import (
 	cmn "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/libs/log"
 	"github.com/tendermint/tendermint/types"
-	"time"
-)
-
-const (
-	defaultPoolSize = 5
 )
 
 type (
 	// AiakosPV implements PrivValidator using Aiakos
 	AiakosPV struct {
-		hsmSessionPool *yubihsm.SessionManager
+		hsmSessionManager *yubihsm.SessionManager
 
 		hsmURL       string
 		authKeyID    uint16
@@ -49,26 +45,19 @@ func NewAiakosPV(hsmURL string, signingKeyID uint16, authKeyID uint16, password 
 
 // OnStart implements cmn.Service.
 func (a *AiakosPV) OnStart() error {
-
-	sessionPool, err := yubihsm.NewSessionManager(connector.NewHTTPConnector(a.hsmURL), a.authKeyID, a.password, defaultPoolSize)
+	sessionManager, err := yubihsm.NewSessionManager(connector.NewHTTPConnector(a.hsmURL), a.authKeyID, a.password)
 	if err != nil {
 		return err
 	}
-	a.hsmSessionPool = sessionPool
 
-	select {
-	case <-sessionPool.Connected:
-		a.Logger.Info("connected to HSM")
-	case <-time.After(5 * time.Second):
-		return errors.New("connection/authentication with the HSM timed out; look at yubihsm logs for more info")
-	}
+	a.hsmSessionManager = sessionManager
 
 	return nil
 }
 
 // OnStop implements cmn.Service.
 func (a *AiakosPV) OnStop() {
-	a.hsmSessionPool.Destroy()
+	a.hsmSessionManager.Destroy()
 }
 
 // GetAddress returns the address of the validator.
@@ -84,16 +73,12 @@ func (a *AiakosPV) GetPubKey() crypto.PubKey {
 	if a.cachedPubKey != nil {
 		return a.cachedPubKey
 	}
-	session, err := a.hsmSessionPool.GetSession()
-	if err != nil {
-		panic(err)
-	}
 
 	command, err := commands.CreateGetPubKeyCommand(a.signingKeyID)
 	if err != nil {
 		panic(err)
 	}
-	resp, err := session.SendEncryptedCommand(command)
+	resp, err := a.hsmSessionManager.SendEncryptedCommand(command)
 	if err != nil {
 		panic(err)
 	}
@@ -167,17 +152,15 @@ func (a *AiakosPV) SignHeartbeat(chainID string, heartbeat *types.Heartbeat) err
 // This fails if the key slot already contains a key.
 // This should be used for testing purposes only. Wrap and import keys in production.
 func (a *AiakosPV) ImportKey(keyID uint16, key []byte) error {
-	session, err := a.hsmSessionPool.GetSession()
-	if err != nil {
-		return err
-	}
-
 	command, err := commands.CreatePutAsymmetricKeyCommand(keyID, []byte("imported"), commands.Domain1, commands.CapabilityAsymmetricSignEddsa, commands.AlgorighmED25519, key, []byte{})
-
-	resp, err := session.SendEncryptedCommand(command)
 	if err != nil {
 		return err
 	}
+	resp, err := a.hsmSessionManager.SendEncryptedCommand(command)
+	if err != nil {
+		return err
+	}
+
 	parsedResp, matched := resp.(*commands.PutAsymmetricKeyResponse)
 	if !matched {
 		a.Logger.Error("invalid response type")
@@ -193,16 +176,11 @@ func (a *AiakosPV) ImportKey(keyID uint16, key []byte) error {
 }
 
 func (a *AiakosPV) signBytes(data []byte) ([]byte, error) {
-	session, err := a.hsmSessionPool.GetSession()
-	if err != nil {
-		return nil, err
-	}
-
 	command, err := commands.CreateSignDataEddsaCommand(a.signingKeyID, data)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := session.SendEncryptedCommand(command)
+	resp, err := a.hsmSessionManager.SendEncryptedCommand(command)
 	if err != nil {
 		return nil, err
 	}

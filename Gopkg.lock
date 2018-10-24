@@ -8,7 +8,6 @@
   revision = "67e573d211ace594f1366b4ce9d39726c4b19bd0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/certusone/yubihsm-go"
   packages = [
     ".",
@@ -16,7 +15,8 @@
     "connector",
     "securechannel"
   ]
-  revision = "cbe259b1eea4d9429b0d083619a980e581ac59e8"
+  revision = "2f4bdbb679b59998a67ab3443a896c36211ade80"
+  version = "v0.1.0"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -220,6 +220,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ce36da4f71a430971b68672ab49a690efd7bf70faf8188e3474f0d82af7dd355"
+  inputs-digest = "67414e714c2545c1a8679288655315fa603e148f48459c727d031bbf164c4d4e"
   solver-name = "gps-cdcl"
   solver-version = 1
