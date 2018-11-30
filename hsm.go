@@ -135,19 +135,6 @@ func (a *AiakosPV) SignProposal(chainID string, proposal *types.Proposal) error 
 	return nil
 }
 
-// SignHeartbeat signs a canonical representation of the heartbeat, along with the chainID.
-// Implements PrivValidator.
-func (a *AiakosPV) SignHeartbeat(chainID string, heartbeat *types.Heartbeat) error {
-	signature, err := a.signBytes(heartbeat.SignBytes(chainID))
-	if err != nil {
-		return err
-	}
-
-	heartbeat.Signature = signature
-
-	return nil
-}
-
 // ImportKey imports a Eddsa private key to the specified key slot on the HSM.
 // This fails if the key slot already contains a key.
 // This should be used for testing purposes only. Wrap and import keys in production.

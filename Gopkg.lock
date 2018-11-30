@@ -98,20 +98,10 @@
   revision = "e5840949ff4fff0c56f9b6a541e22b63581ea9df"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/tendermint/ed25519"
-  packages = [
-    ".",
-    "edwards25519",
-    "extra25519"
-  ]
-  revision = "d8387025d2b9d158cf4efb07e7ebf814bcce2057"
-
-[[projects]]
   name = "github.com/tendermint/go-amino"
   packages = ["."]
-  revision = "faa6e731944e2b7b6a46ad202902851e8ce85bee"
-  version = "v0.12.0"
+  revision = "dc14acf9ef15f85828bfbc561ed9dd9d2a284885"
+  version = "v0.14.1"
 
 [[projects]]
   name = "github.com/tendermint/tendermint"
@@ -130,22 +120,28 @@
     "libs/pubsub",
     "libs/pubsub/query",
     "types",
-    "types/time"
+    "types/time",
+    "version"
   ]
-  revision = "d419fffe18531317c28c29a292ad7d253f6cafdf"
-  version = "v0.24.0"
+  revision = "44b769b1acd0b2aaa8c199b0885bc2811191fb2e"
+  version = "v0.27.0-dev1"
 
 [[projects]]
-  branch = "master"
   name = "golang.org/x/crypto"
   packages = [
+    "chacha20poly1305",
+    "ed25519",
+    "ed25519/internal/edwards25519",
+    "internal/chacha20",
+    "internal/subtle",
     "pbkdf2",
+    "poly1305",
     "ripemd160"
   ]
-  revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
+  revision = "3764759f34a542a3aef74d6b02e35be7ab893bba"
+  source = "https://github.com/tendermint/crypto"
 
 [[projects]]
-  branch = "release-branch.go1.11"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -156,7 +152,13 @@
     "internal/timeseries",
     "trace"
   ]
-  revision = "c39426892332e1bb5ec0a434a079bf82f5d30c54"
+  revision = "292b43bbf7cb8d35ddf40f8d5100ef3837cced3f"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["cpu"]
+  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -220,6 +222,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "67414e714c2545c1a8679288655315fa603e148f48459c727d031bbf164c4d4e"
+  inputs-digest = "51fee76b7596b9a521095252ebf593e08b2b4c3e5584d696d79d290d2dda05d2"
   solver-name = "gps-cdcl"
   solver-version = 1
