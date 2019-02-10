@@ -60,13 +60,6 @@ func (a *AiakosPV) OnStop() {
 	a.hsmSessionManager.Destroy()
 }
 
-// GetAddress returns the address of the validator.
-// Implements PrivValidator.
-func (a *AiakosPV) GetAddress() types.Address {
-	pubKey := a.GetPubKey()
-	return pubKey.Address()
-}
-
 // GetPubKey returns the public key of the validator.
 // Implements PrivValidator.
 func (a *AiakosPV) GetPubKey() crypto.PubKey {
@@ -178,8 +171,7 @@ func (a *AiakosPV) signBytes(data []byte) ([]byte, error) {
 		return nil, errors.New("invalid response type")
 	}
 
-	// TODO replace with ed25519.SignatureSize once tendermint is upgraded to >=v0.24.0
-	if len(parsedResp.Signature) != 64 {
+	if len(parsedResp.Signature) != ed25519.SignatureSize {
 		a.Logger.Error("invalid signature length", "size", len(parsedResp.Signature))
 		return nil, errors.New("invalid signature length")
 	}

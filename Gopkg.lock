@@ -2,10 +2,9 @@
 
 
 [[projects]]
-  branch = "master"
   name = "github.com/btcsuite/btcd"
   packages = ["btcec"]
-  revision = "67e573d211ace594f1366b4ce9d39726c4b19bd0"
+  revision = "ed77733ec07dfc8a513741138419b8d9d3de9d2d"
 
 [[projects]]
   name = "github.com/certusone/yubihsm-go"
@@ -32,6 +31,12 @@
     "cmac"
   ]
   revision = "34d48bb938155e3b408f014835ee1f6e3b4c2672"
+
+[[projects]]
+  name = "github.com/ethereum/go-ethereum"
+  packages = ["crypto/secp256k1"]
+  revision = "7fa3509e2eaf1a4ebc12344590e5699406690f15"
+  version = "v1.8.22"
 
 [[projects]]
   name = "github.com/go-kit/kit"
@@ -93,11 +98,6 @@
   version = "v0.8.0"
 
 [[projects]]
-  name = "github.com/tendermint/btcd"
-  packages = ["btcec"]
-  revision = "e5840949ff4fff0c56f9b6a541e22b63581ea9df"
-
-[[projects]]
   name = "github.com/tendermint/go-amino"
   packages = ["."]
   revision = "dc14acf9ef15f85828bfbc561ed9dd9d2a284885"
@@ -123,19 +123,15 @@
     "types/time",
     "version"
   ]
-  revision = "44b769b1acd0b2aaa8c199b0885bc2811191fb2e"
-  version = "v0.27.0-dev1"
+  revision = "28d75ec8016b7fb043735cbe4c4d92ec73355de7"
+  version = "v0.30.0"
 
 [[projects]]
   name = "golang.org/x/crypto"
   packages = [
-    "chacha20poly1305",
     "ed25519",
     "ed25519/internal/edwards25519",
-    "internal/chacha20",
-    "internal/subtle",
     "pbkdf2",
-    "poly1305",
     "ripemd160"
   ]
   revision = "3764759f34a542a3aef74d6b02e35be7ab893bba"
@@ -153,12 +149,6 @@
     "trace"
   ]
   revision = "292b43bbf7cb8d35ddf40f8d5100ef3837cced3f"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/sys"
-  packages = ["cpu"]
-  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -222,6 +212,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "51fee76b7596b9a521095252ebf593e08b2b4c3e5584d696d79d290d2dda05d2"
+  inputs-digest = "38dc72851dc7c05fc4ea2e24199d93496cf4c96c5f2215927b21850a61c47337"
   solver-name = "gps-cdcl"
   solver-version = 1
